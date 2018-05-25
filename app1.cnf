@@ -1,0 +1,52 @@
+[server default]
+# 授权的manager监控用号和密码
+user=root
+password=123456
+
+# 复制用户和密码
+repl_password=123456
+repl_user=repl
+
+# ssh远程登录用户和端口
+ssh_port=8822
+ssh_user=root
+
+# 检测主master存活间隔和类型
+ping_interval=1
+ping_type=SELECT
+
+# 工作目录相关
+manager_log=/data/mha/mha/app1/manager.log
+manager_workdir=/data/mha/mha/app1
+remote_workdir=/data/mha/mha/tmp
+master_binlog_dir="/data/mysql_5700"
+
+# 故障failover脚本，需在官网的基础上修改配置
+master_ip_failover_script="/data/mha/scripts/master_ip_failover"
+master_ip_online_change_script="/data/mha/scripts/master_ip_online_change"
+
+# shutdown_script="/data/mha/scripts/power_manager"
+# report_script="/data/mha/scripts/send_report"
+
+# 额外路由检测主master宕机与否，ssh端口非22，需额外设置参数--port=8822
+secondary_check_script="masterha_secondary_check -s 10.200.142.49 -s 10.200.142.50 --port=8822"
+
+[server1]
+candidate_master=1
+client_bindir=/usr/local/mysql-5.7.18/bin/
+client_libdir=/usr/local/mysql-5.7.18/lib/
+hostname=10.200.142.48
+port=5700
+
+[server2]
+candidate_master=1
+client_bindir=/usr/local/mysql-5.7.18/bin/
+client_libdir=/usr/local/mysql-5.7.18/lib/
+hostname=10.200.142.49
+port=5700
+
+[server3]
+client_bindir=/usr/local/mysql-5.7.18/bin/
+client_libdir=/usr/local/mysql-5.7.18/lib/
+hostname=10.200.142.50
+port=5700
