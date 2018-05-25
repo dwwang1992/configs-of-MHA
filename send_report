@@ -1,0 +1,44 @@
+#!/usr/bin/perl
+use strict;
+use warnings FATAL => 'all';
+
+use Email::Simple;
+use Email::Sender::Simple qw(sendmail);
+use Email::Sender::Transport::SMTP::TLS;
+use Getopt::Long;
+my ( $dead_master_host, $new_master_host, $new_slave_hosts, $subject, $body );
+
+my $smtp='smtp.126.com';
+my $mail_from='dwwang1992@126.com';
+my $mail_user='dwwang1992@126.com';
+#邮箱授权码不是密码 邮箱授权码获取方式可以百度
+my $mail_auth_pass='dwwang1992';
+my $mail_to='wangdawei100';
+
+GetOptions(
+  'orig_master_host=s' => \$dead_master_host,
+  'new_master_host=s'  => \$new_master_host,
+  'new_slave_hosts=s'  => \$new_slave_hosts,
+  'subject=s'          => \$subject,
+  'body=s'             => \$body,
+);
+my $transport = Email::Sender::Transport::SMTP::TLS->new(
+    host     => $smtp,
+    port     => 25,
+    username => $mail_user,
+    password => $mail_auth_pass,
+);
+
+
+my $message = Email::Simple->create(
+    header => [
+        From           => $mail_from,
+        To             => $mail_to,
+        Subject        => $subject,
+    ],
+    body => $body,
+);
+
+
+sendmail( $message, {transport => $transport} );
+exit 0;
