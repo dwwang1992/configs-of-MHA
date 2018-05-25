@@ -24,9 +24,9 @@ master_binlog_dir="/data/mysql_5700"
 # 故障failover脚本，需在官网的基础上修改配置
 master_ip_failover_script="/data/mha/scripts/master_ip_failover"
 master_ip_online_change_script="/data/mha/scripts/master_ip_online_change"
+report_script="/data/mha/scripts/send_report"
 
 # shutdown_script="/data/mha/scripts/power_manager"
-# report_script="/data/mha/scripts/send_report"
 
 # 额外路由检测主master宕机与否，ssh端口非22，需额外设置参数--port=8822
 secondary_check_script="masterha_secondary_check -s 10.200.142.49 -s 10.200.142.50 --port=8822"
