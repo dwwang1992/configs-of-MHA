@@ -29,7 +29,7 @@ my ( $dead_master_host, $new_master_host, $new_slave_hosts, $subject, $body );
 my $smtp='smtp.126.com';
 my $mail_from='xxxx@126.com';
 my $mail_user='xxxx@126.com';
-my $mail_pass='password';
+my $mail_pass='password 不是邮箱密码 客户端授权码';
 my $mail_to=['xxxx@126.com'];
 GetOptions(
   'orig_master_host=s' => \$dead_master_host,
