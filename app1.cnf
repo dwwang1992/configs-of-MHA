@@ -29,24 +29,24 @@ report_script="/data/mha/scripts/send_report"
 # shutdown_script="/data/mha/scripts/power_manager"
 
 # 额外路由检测主master宕机与否，ssh端口非22，需额外设置参数--port=8822
-secondary_check_script="masterha_secondary_check -s 10.200.142.49 -s 10.200.142.50 --port=8822"
+secondary_check_script="masterha_secondary_check -s xxx.xxx.142.49 -s xxx.xxx.142.50 --port=8822"
 
 [server1]
 candidate_master=1
 client_bindir=/usr/local/mysql-5.7.18/bin/
 client_libdir=/usr/local/mysql-5.7.18/lib/
-hostname=10.200.142.48
+hostname=xxx.xxx.142.48
 port=5700
 
 [server2]
 candidate_master=1
 client_bindir=/usr/local/mysql-5.7.18/bin/
 client_libdir=/usr/local/mysql-5.7.18/lib/
-hostname=10.200.142.49
+hostname=xxx.xxx.142.49
 port=5700
 
 [server3]
 client_bindir=/usr/local/mysql-5.7.18/bin/
 client_libdir=/usr/local/mysql-5.7.18/lib/
-hostname=10.200.142.50
+hostname=xxx.xxx.142.50
 port=5700
