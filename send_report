@@ -1,20 +1,36 @@
 #!/usr/bin/perl
+
+#  Copyright (C) 2011 DeNA Co.,Ltd.
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#  Foundation, Inc.,
+#  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+## Note: This is a sample script and is not complete. Modify the script based on your environment.
+
 use strict;
 use warnings FATAL => 'all';
-
-use Email::Simple;
-use Email::Sender::Simple qw(sendmail);
-use Email::Sender::Transport::SMTP::TLS;
+use Mail::Sender;
 use Getopt::Long;
+
+#new_master_host and new_slave_hosts are set only when recovering master succeeded
 my ( $dead_master_host, $new_master_host, $new_slave_hosts, $subject, $body );
-
 my $smtp='smtp.126.com';
-my $mail_from='xxxxx@126.com';
-my $mail_user='xxxxx@126.com';
-#邮箱授权码不是密码 邮箱授权码获取方式可以百度
-my $mail_auth_pass='xxxxx';
-my $mail_to='xxxxx';
-
+my $mail_from='xxxx@126.com';
+my $mail_user='xxxx@126.com';
+my $mail_pass='password';
+my $mail_to=['xxxx@126.com'];
 GetOptions(
   'orig_master_host=s' => \$dead_master_host,
   'new_master_host=s'  => \$new_master_host,
@@ -22,23 +38,35 @@ GetOptions(
   'subject=s'          => \$subject,
   'body=s'             => \$body,
 );
-my $transport = Email::Sender::Transport::SMTP::TLS->new(
-    host     => $smtp,
-    port     => 25,
-    username => $mail_user,
-    password => $mail_auth_pass,
-);
 
+mailToContacts($smtp,$mail_from,$mail_user,$mail_pass,$mail_to,$subject,$body);
 
-my $message = Email::Simple->create(
-    header => [
-        From           => $mail_from,
-        To             => $mail_to,
-        Subject        => $subject,
-    ],
-    body => $body,
-);
+sub mailToContacts {
+    my ( $smtp, $mail_from, $user, $passwd, $mail_to, $subject, $msg ) = @_;
+    open my $DEBUG, "> /tmp/monitormail.log"
+        or die "Can't open the debug      file:$!\n";
+    my $sender = new Mail::Sender {
+        ctype       => 'text/plain; charset=utf-8',
+        encoding    => 'utf-8',
+        smtp        => $smtp,
+        from        => $mail_from,
+        auth        => 'LOGIN',
+        TLS_allowed => '0',
+        authid      => $user,
+        authpwd     => $passwd,
+        to          => $mail_to,
+        subject     => $subject,
+        debug       => $DEBUG
+    };
 
+    $sender->MailMsg(
+        {   msg   => $msg,
+            debug => $DEBUG
+        }
+    ) or print $Mail::Sender::Error;
+    return 1;
+}
 
-sendmail( $message, {transport => $transport} );
+# Do whatever you want here
+
 exit 0;
