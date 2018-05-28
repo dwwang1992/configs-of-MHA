@@ -9,11 +9,11 @@ use Getopt::Long;
 my ( $dead_master_host, $new_master_host, $new_slave_hosts, $subject, $body );
 
 my $smtp='smtp.126.com';
-my $mail_from='dwwang1992@126.com';
-my $mail_user='dwwang1992@126.com';
+my $mail_from='xxxxx@126.com';
+my $mail_user='xxxxx@126.com';
 #邮箱授权码不是密码 邮箱授权码获取方式可以百度
-my $mail_auth_pass='dwwang1992';
-my $mail_to='wangdawei100';
+my $mail_auth_pass='xxxxx';
+my $mail_to='xxxxx';
 
 GetOptions(
   'orig_master_host=s' => \$dead_master_host,
